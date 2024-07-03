@@ -108,30 +108,40 @@ def agregar_numero(nombre_archivo):
     
 def eliminar_numero(nombre_archivo):
     """Elimina un número de una lista existente."""
-    try:
-        with open(nombre_archivo, 'r') as archivo:
-            lista_numeros = json.load(archivo)
-    except FileNotFoundError:
-        print(f"El archivo {nombre_archivo} no se encontró.")
-        return
-
     while True:
         try:
-            numero_a_eliminar = int(input("Ingresa el número de 8 dígitos que deseas eliminar: "))
-            if len(str(numero_a_eliminar)) == 8:
-                break
-            else:
-                print("Por favor, ingresa un número válido de 8 dígitos.")
-        except ValueError:
-            print("Por favor, ingresa un número válido.")
+            with open(nombre_archivo, 'r') as archivo:
+                lista_numeros = json.load(archivo)
+            break
+        except FileNotFoundError:
+            print(f"\nEl archivo {nombre_archivo} no se encontró.")
+            nombre_archivo = input("\nIngrese el nombre del archivo (con extension .json): ")
+        except json.JSONDecodeError:
+            print(f"\nEl archivo {nombre_archivo} no se contiene un formato JSON válido.")
+            nombre_archivo = input("\nIngrese el nombre del archivo (con extension .json): ")
 
-    if numero_a_eliminar in lista_numeros:
-        lista_numeros.remove(numero_a_eliminar)
-        with open(nombre_archivo, 'w') as archivo:
-            json.dump(lista_numeros, archivo)
-        print(f"Número {numero_a_eliminar} ha sido eliminado de la lista {nombre_archivo}.")
-    else:
-        print(f"El número {numero_a_eliminar} no se encontró en la lista {nombre_archivo}.")
+    while True:
+        while True:
+            try:
+                numero_a_eliminar = int(input("Ingresa el número de 8 dígitos que deseas eliminar: "))
+                if len(str(numero_a_eliminar)) == 8:
+                    break
+                else:
+                    print("Por favor, ingresa un número válido de 8 dígitos.")
+            except ValueError:
+                print("Por favor, ingresa un número válido.")
+
+        if numero_a_eliminar in lista_numeros:
+            lista_numeros.remove(numero_a_eliminar)
+            with open(nombre_archivo, 'w') as archivo:
+                json.dump(lista_numeros, archivo)
+                print(f"Número {numero_a_eliminar} ha sido eliminado de la lista {nombre_archivo}.")
+        else:
+            print(f"El número {numero_a_eliminar} no se encontró en la lista {nombre_archivo}.")
+        
+        seguir_eliminando = input(f"Desea seguir eliminando otro número (s/n): ").lower()
+        if seguir_eliminando != 's':
+            break
 
 def buscar_numero(nombre_archivo):
     """Busca un número en una lista y muestra si está presente."""
