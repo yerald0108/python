@@ -135,11 +135,11 @@ def eliminar_numero(nombre_archivo):
             lista_numeros.remove(numero_a_eliminar)
             with open(nombre_archivo, 'w') as archivo:
                 json.dump(lista_numeros, archivo)
-                print(f"Número {numero_a_eliminar} ha sido eliminado de la lista {nombre_archivo}.")
+                print(f"\nNúmero {numero_a_eliminar} ha sido eliminado de la lista {nombre_archivo}.")
         else:
-            print(f"El número {numero_a_eliminar} no se encontró en la lista {nombre_archivo}.")
+            print(f"\nEl número {numero_a_eliminar} no se encontró en la lista {nombre_archivo}.")
         
-        seguir_eliminando = input(f"Desea seguir eliminando otro número (s/n): ").lower()
+        seguir_eliminando = input(f"\nDesea seguir eliminando otro número (s/n): ").lower()
         if seguir_eliminando != 's':
             break
 
