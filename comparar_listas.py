@@ -85,7 +85,7 @@ def agregar_numero(nombre_archivo):
     except FileNotFoundError:
         print(f"El archivo {nombre_archivo} no se encontró.")
         return
-
+    
     while True:
         numero = input("Ingresa un número de 8 dígitos (o escribe 'fin' para terminar): ")
         if numero.lower() == "fin":
@@ -93,7 +93,10 @@ def agregar_numero(nombre_archivo):
         try:
             numero = int(numero)
             if len(str(numero)) == 8:
-                lista_numeros.append(numero)
+                if numero in lista_numeros:
+                    print("Error: Este número ya fue introducido.")
+                else:
+                    lista_numeros.append(numero)
             else:
                 print("Por favor, ingresa un número válido de 8 dígitos.")
         except ValueError:
@@ -132,28 +135,38 @@ def eliminar_numero(nombre_archivo):
 
 def buscar_numero(nombre_archivo):
     """Busca un número en una lista y muestra si está presente."""
-    try:
-        with open(nombre_archivo, 'r') as archivo:
-            lista_numeros = json.load(archivo)
-    except FileNotFoundError:
-        print(f"El archivo {nombre_archivo} no se encontró.")
-        return
-
     while True:
         try:
-            numero_a_buscar = int(input("Ingresa el número de 8 dígitos que deseas buscar: "))
-            if len(str(numero_a_buscar)) == 8:
-                break
-            else:
-                print("Por favor, ingresa un número válido de 8 dígitos.")
-        except ValueError:
-            print("Por favor, ingresa un número válido.")
+            with open(nombre_archivo, 'r') as archivo:
+                lista_numeros = json.load(archivo)
+            break
+        except FileNotFoundError:
+            print(f"\nEl archivo {nombre_archivo} no se encontró.")
+            nombre_archivo = input("\nIngrese el nombre del archivo (con extension .json): ")
+        except json.JSONDecodeError:
+            print(f"\nEl archivo {nombre_archivo} no se contiene un formato JSON válido.")
+            nombre_archivo = input("\nIngrese el nombre del archivo (con extension .json): ")
 
-    if numero_a_buscar in lista_numeros:
-        print(f"El número {numero_a_buscar} está presente en la lista {nombre_archivo}.")
-    else:
-        print(f"El número {numero_a_buscar} NO está presente en la lista {nombre_archivo}.")
+    while True:
+        while True:
+            try:
+                numero_a_buscar = int(input("Ingresa el número de 8 dígitos que deseas buscar: "))
+                if len(str(numero_a_buscar)) == 8:
+                    break
+                else: 
+                    print("Por favor, ingresa un número válido de 8 dígitos.")
+            except ValueError:
+                print("Por favor, ingresa un número válido.")
 
+        if numero_a_buscar in lista_numeros:
+            print(f"\nEl número {numero_a_buscar} está presente en la lista {nombre_archivo}.")
+        else:
+            print(f"\nEl número {numero_a_buscar} NO está presente en la lista {nombre_archivo}.")
+            
+        seguir_buscando = input("\n¿Desea seguir buscando otro número? (s/n): ").lower()
+        if seguir_buscando != 's':
+            break
+        
 def main():
     """Función principal del programa."""
     while True:
