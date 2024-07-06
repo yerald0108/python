@@ -62,11 +62,11 @@ def comparar_listas():
 
     repetidos = set(lista1) & set(lista2)
     if repetidos:
-        print("Números repetidos:")
+        print("\nNúmeros repetidos:")
         for numero in repetidos:
             print(numero)
     else:
-        print("No se encontraron números repetidos.")
+        print("\nNo se encontraron números repetidos.")
 
 def ver_cantidad_numeros(nombre_archivo):
     """Muestra la cantidad de números en una lista."""
